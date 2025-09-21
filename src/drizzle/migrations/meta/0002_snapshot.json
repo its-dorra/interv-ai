@@ -60,12 +60,8 @@
           "name": "meet_ai_interview_jobInfoId_meet_ai_job_info_id_fk",
           "tableFrom": "meet_ai_interview",
           "tableTo": "meet_ai_job_info",
-          "columnsFrom": [
-            "jobInfoId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["jobInfoId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -139,12 +135,8 @@
           "name": "meet_ai_job_info_userId_meet_ai_users_id_fk",
           "tableFrom": "meet_ai_job_info",
           "tableTo": "meet_ai_users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -218,12 +210,8 @@
           "name": "meet_ai_questions_jobInfoId_meet_ai_job_info_id_fk",
           "tableFrom": "meet_ai_questions",
           "tableTo": "meet_ai_job_info",
-          "columnsFrom": [
-            "jobInfoId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["jobInfoId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -284,9 +272,7 @@
         "meet_ai_users_email_unique": {
           "name": "meet_ai_users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -298,20 +284,12 @@
     "public.job_info_experience_level": {
       "name": "job_info_experience_level",
       "schema": "public",
-      "values": [
-        "junior",
-        "mid-level",
-        "senior"
-      ]
+      "values": ["junior", "mid-level", "senior"]
     },
     "public.questions_question_difficulty": {
       "name": "questions_question_difficulty",
       "schema": "public",
-      "values": [
-        "east",
-        "medium",
-        "hard"
-      ]
+      "values": ["east", "medium", "hard"]
     }
   },
   "schemas": {},

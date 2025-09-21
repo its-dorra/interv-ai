@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import JobInfoForm from "@/features/job-infos/components/job-info-form";
 import { getJobInfos } from "@/features/job-infos/db";
 import { getCurrentUser } from "@/services/clerk/lib/get-current-user";
 
@@ -20,7 +21,7 @@ function NoJobInfos() {
   return (
     <div className="container my-4 max-w-5xl">
       <h1 className="text-3xl md:text-4xl lg:text-5xl mb-4">
-        Welcome to Meet AI
+        Welcome to IntervAI
       </h1>
       <p className="mb-8 text-muted-foreground">
         To get started, enter information about the type of job you are wanting
@@ -30,7 +31,9 @@ function NoJobInfos() {
         test interview
       </p>
       <Card>
-        <CardContent></CardContent>
+        <CardContent>
+          <JobInfoForm />
+        </CardContent>
       </Card>
     </div>
   );

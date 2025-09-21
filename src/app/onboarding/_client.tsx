@@ -1,9 +1,9 @@
 "use client";
 
-import { getUser } from "@/features/users/actions";
-import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Loader2Icon } from "lucide-react";
+import { getUser } from "@/features/users/actions";
 
 export function OnboardingClient({ userId }: { userId: string }) {
   const router = useRouter();
@@ -19,7 +19,7 @@ export function OnboardingClient({ userId }: { userId: string }) {
     }, 250);
 
     return () => clearInterval(intervalId);
-  }, [userId, router]);
+  }, [userId, router.replace]);
 
   return <Loader2Icon className="animate-spin size-24" />;
 }

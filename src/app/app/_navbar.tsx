@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useClerk } from "@clerk/nextjs";
 import Link from "next/link";
-import UserAvatar from "@/components/user-avatar";
+import UserAvatar from "@/features/users/components/user-avatar";
 
 export default function NavBar({
   user,
@@ -24,7 +24,7 @@ export default function NavBar({
       <nav className="container flex h-full items-center justify-between">
         <Link href="/app" className="flex items-center space-x-2">
           <BrainCircuitIcon className="size-8 text-primary" />
-          <span className="font-semibold">Meet AI</span>
+          <span className="font-semibold">IntervAI</span>
         </Link>
 
         <div className="flex items-center space-x-4">

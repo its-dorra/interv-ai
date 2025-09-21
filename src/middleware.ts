@@ -1,6 +1,7 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import arcjet, { detectBot, shield, slidingWindow } from "@arcjet/next";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { serverEnv } from "./data/env/server";
+
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/",
