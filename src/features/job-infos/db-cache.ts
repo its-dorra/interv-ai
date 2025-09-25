@@ -14,13 +14,13 @@ export function getJobInfoIdTag(jobInfoId: string) {
 }
 
 export function revalidateJobInfosCache({
-  jobInfoId,
+  id,
   userId,
 }: {
-  jobInfoId: string;
+  id: string;
   userId: string;
 }) {
   revalidateTag(getJobInfosGlobalTag());
   revalidateTag(getJobInfoUserTag(userId));
-  revalidateTag(getJobInfoIdTag(jobInfoId));
+  revalidateTag(getJobInfoIdTag(id));
 }

@@ -1,7 +1,18 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import JobInfoForm from "@/features/job-infos/components/job-info-form";
 import { getJobInfos } from "@/features/job-infos/db";
 import { getCurrentUser } from "@/services/clerk/lib/get-current-user";
+import { ArrowRightIcon, PlusIcon } from "lucide-react";
+import Link from "next/link";
+import { formatExperienceLevel } from "@/features/job-infos/lib/formatters";
 
 export default async function AppPage() {
   const { userId, redirectToSignIn } = await getCurrentUser({ allData: false });
@@ -14,7 +25,62 @@ export default async function AppPage() {
     return <NoJobInfos />;
   }
 
-  return <div>Home Page</div>;
+  return (
+    <div className="container my-4">
+      <div className="flex gap-2 justify-between mb-6">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl">
+          Select a job description
+        </h1>
+        <Button asChild>
+          <Link href="/app/job-infos/new">
+            <PlusIcon />
+            <span>Create Job Description</span>
+          </Link>
+        </Button>
+      </div>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 has-hover:*:not-hover:opacity-70">
+        {jobInfos.map((jobInfo) => (
+          <Link
+            className="hover:scale-[1.02] transition-[transform_opacity]"
+            href={`/app/job-infos/${jobInfo.id}`}
+            key={jobInfo.id}
+          >
+            <Card className="h-full">
+              <div className="flex items-center justify-between h-full">
+                <div className="h-full space-y-4">
+                  <CardHeader>
+                    <CardTitle className="text-lg">{jobInfo.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-muted-foreground line-clamp-3">
+                    {jobInfo.description}
+                  </CardContent>
+                  <CardFooter className="flex gap-2">
+                    <Badge variant="outline">
+                      {formatExperienceLevel(jobInfo.experienceLevel)}
+                    </Badge>
+                    {jobInfo.title && (
+                      <Badge variant="outline">{jobInfo.title}</Badge>
+                    )}
+                  </CardFooter>
+                </div>
+                <CardContent>
+                  <ArrowRightIcon className="size-6" />
+                </CardContent>
+              </div>
+            </Card>
+          </Link>
+        ))}
+        <Link className="transition-opacity" href="/app/job-infos/new">
+          <Card className="h-full flex items-center justify-center border-dashed bg-transparent hover:border-primary/50 transition-colors shadow-none">
+            <div className="flex items-center gap-2 text-lg">
+              <PlusIcon className="size-6" />
+              <span>New Job Description</span>
+            </div>
+          </Card>
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 function NoJobInfos() {

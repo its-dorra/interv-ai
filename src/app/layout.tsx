@@ -1,16 +1,9 @@
 import { type Metadata } from "next";
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { Button } from "@/components/ui/button";
 import ClerkProvider from "@/services/clerk/components/clerk-provider";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
 
 const outfitSans = Outfit({
   variable: "--font-outfit-sans",
@@ -36,6 +29,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableColorScheme
           >
+            <Toaster />
             {children}
           </ThemeProvider>
         </body>

@@ -12,31 +12,58 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { ExperienceLevel, experienceLevels } from "@/drizzle/schema/job-info";
+import {
+  type ExperienceLevel,
+  experienceLevels,
+  JobInfoTable,
+} from "@/drizzle/schema/job-info";
 import { Loader2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { JobInfoSchema } from "../schemas";
 import FieldInfo from "@/components/field-info";
 import FieldDescription from "@/components/field-description";
-import z from "zod";
+import type z from "zod";
 import { formatExperienceLevel } from "../lib/formatters";
+import type { Prettify } from "@/lib/utils";
+import { createJobInfoAction, updateJobInfoAction } from "../actions";
+import { toast } from "sonner";
 
 type JobInfoFormData = z.infer<typeof JobInfoSchema>;
 
-export default function JobInfoForm() {
+export default function JobInfoForm({
+  jobInfo,
+}: {
+  jobInfo?: Prettify<
+    Pick<
+      typeof JobInfoTable.$inferSelect,
+      "id" | "name" | "title" | "experienceLevel" | "description"
+    >
+  >;
+}) {
   const form = useForm({
-    defaultValues: {
-      name: "",
-      jobTitle: "",
-      experienceLevel: "junior",
-      description: "",
-    } as JobInfoFormData,
+    defaultValues:
+      jobInfo ??
+      ({
+        name: "",
+        title: null,
+        experienceLevel: "junior",
+        description: "",
+      } as JobInfoFormData),
     validators: {
-      // onChange: JobInfoSchema,
       onSubmit: JobInfoSchema,
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async ({ value }) => {
+      const action = jobInfo
+        ? updateJobInfoAction.bind(null, jobInfo.id)
+        : createJobInfoAction;
+
+      const result = await action(value);
+
+      if (result.serverError || result.validationErrors) {
+        toast.error(
+          result.serverError || result.validationErrors?._errors?.join("\n"),
+        );
+      }
     },
   });
 
@@ -52,7 +79,7 @@ export default function JobInfoForm() {
       <div>
         <form.Field name="name">
           {(field) => (
-            <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-1">
               <Label htmlFor={field.name}>Name</Label>
               <Input
                 id={field.name}
@@ -61,6 +88,7 @@ export default function JobInfoForm() {
                 onChange={(e) => field.handleChange(e.target.value)}
                 placeholder="Enter a job name"
               />
+
               <FieldDescription>
                 A descriptive name for this job opportunity.
               </FieldDescription>
@@ -72,15 +100,15 @@ export default function JobInfoForm() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <form.Field name="jobTitle">
+          <form.Field name="title">
             {(field) => (
-              <div className="flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-1">
                 <Label htmlFor={field.name}>Job Title</Label>
                 <Input
                   id={field.name}
-                  value={field.state.value}
+                  value={field.state.value || ""}
                   onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={(e) => field.handleChange(e.target.value || null)}
                   placeholder="e.g. Senior Frontend Developer"
                 />
                 <FieldDescription>
@@ -96,7 +124,7 @@ export default function JobInfoForm() {
         <div>
           <form.Field name="experienceLevel">
             {(field) => (
-              <div className="flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-1">
                 <Label htmlFor={field.name}>Experience Level</Label>
                 <Select
                   value={field.state.value}
@@ -125,7 +153,7 @@ export default function JobInfoForm() {
       <div>
         <form.Field name="description">
           {(field) => (
-            <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-1">
               <Label htmlFor={field.name}>Description</Label>
               <Textarea
                 id={field.name}
@@ -153,12 +181,12 @@ export default function JobInfoForm() {
           <Button
             className="self-end"
             type="submit"
-            disabled={!form.state.isValid}
+            disabled={isSubmitting || !isValid}
           >
             {isSubmitting && !isValid ? (
               <Loader2Icon className="animate-spin size-6" />
             ) : (
-              "Submit"
+              "Save job information"
             )}
           </Button>
         )}
