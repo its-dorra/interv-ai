@@ -1,6 +1,6 @@
-import { experienceLevels, JobInfoTable } from "@/drizzle/schema";
-import { z } from "zod";
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
+import { JobInfoTable, experienceLevels } from "@/drizzle/schema";
+import { z } from "zod";
 
 export const JobInfoSchema = z.object({
   name: z.string().nonempty("Required"),

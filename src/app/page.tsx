@@ -1,22 +1,27 @@
 import { ThemeToggle } from "@/components/theme-toggle";
+import PricingTable from "@/services/clerk/components/pricing-table";
 import {
   SignInButton,
   SignedIn,
   SignedOut,
   SignOutButton,
+  UserButton,
 } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <>
-      <ThemeToggle />
-      <div className="text-4xl font-bold text-green-400">Hi there</div>
-      <SignedIn>
-        <SignOutButton />
-      </SignedIn>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-    </>
+    <div className="p-4 space-y-4">
+      <div className="flex items-center gap-4">
+        <SignedIn>
+          <SignOutButton />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <UserButton />
+        <ThemeToggle />
+      </div>
+      <PricingTable />
+    </div>
   );
 }

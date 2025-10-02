@@ -2,20 +2,23 @@ import db from "@/drizzle/db";
 import { getUserIdTag } from "@/features/users/db-cache";
 import { auth } from "@clerk/nextjs/server";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { cache } from "react";
 
-export async function getCurrentUser({
-  allData = false,
-}: {
-  allData?: boolean;
-}) {
-  const { userId, redirectToSignIn } = await auth();
+export const getCurrentUser = cache(
+  async ({
+    allData = false,
+  }: {
+    allData?: boolean;
+  } = {}) => {
+    const { userId, redirectToSignIn } = await auth();
 
-  return {
-    userId,
-    redirectToSignIn,
-    user: allData && userId ? await getUser(userId) : null,
-  };
-}
+    return {
+      userId,
+      redirectToSignIn,
+      user: allData && userId ? await getUser(userId) : null,
+    };
+  }
+);
 
 async function getUser(userId: string) {
   "use cache";

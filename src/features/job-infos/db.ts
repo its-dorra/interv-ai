@@ -1,9 +1,14 @@
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import db from "@/drizzle/db";
-import { getJobInfoUserTag, revalidateJobInfosCache } from "./db-cache";
+import {
+  getJobInfoIdTag,
+  getJobInfoUserTag,
+  revalidateJobInfosCache,
+} from "./db-cache";
 import type { CreateJobInfo, UpdateJobInfo } from "./types";
 import { JobInfoTable } from "@/drizzle/schema";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
+import { cache } from "react";
 
 export async function getJobInfos(userId: string) {
   "use cache";
@@ -26,12 +31,10 @@ export async function insertJobInfo(data: CreateJobInfo) {
   return newJobInfo;
 }
 
-export async function updateJobInfo(data: UpdateJobInfo) {
-  const { id, ...rest } = data;
-
+export async function updateJobInfo(id: string, data: UpdateJobInfo) {
   const [updatedJobInfo] = await db
     .update(JobInfoTable)
-    .set(rest)
+    .set(data)
     .where(eq(JobInfoTable.id, id))
     .returning({ id: JobInfoTable.id, userId: JobInfoTable.userId });
 
@@ -40,11 +43,12 @@ export async function updateJobInfo(data: UpdateJobInfo) {
   return updatedJobInfo;
 }
 
-export async function getExistingJobInfo(id: string, userId: string) {
+export const getJobInfo = cache(async (id: string, userId: string) => {
+  "use cache";
+  cacheTag(getJobInfoIdTag(id));
+
   return db.query.JobInfoTable.findFirst({
-    where: (t, { eq, and }) => and(eq(t.id, id), eq(t.userId, userId)),
-    columns: {
-      id: true,
-    },
+    where: (fields, { eq, and }) =>
+      and(eq(fields.id, id), eq(fields.userId, userId)),
   });
-}
+});
