@@ -1,13 +1,13 @@
 import { varchar } from "drizzle-orm/pg-core";
 import { createdAt, pgTable, updatedAt } from "../schema-helpers";
-import { relations } from "drizzle-orm";
+import { relations } from "drizzle-orm/relations";
 import { JobInfoTable } from "./job-info";
 
 export const UserTable = pgTable("users", {
-  id: varchar().primaryKey(),
-  email: varchar().notNull().unique(),
-  name: varchar().notNull(),
-  imageUrl: varchar().notNull(),
+  id: varchar("id").primaryKey(),
+  email: varchar("email").notNull().unique(),
+  name: varchar("name").notNull(),
+  imageUrl: varchar("image_url").notNull(),
   createdAt,
   updatedAt,
 });

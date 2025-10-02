@@ -1,7 +1,8 @@
-import SuspendedItem from "@/components/suspended-item";
+import { getInterviews } from "@/features/interviews/db";
 import JobInfoBackLink from "@/features/job-infos/components/job-info-back-link";
+import { getCurrentUser } from "@/services/clerk/lib/get-current-user";
 import { Loader2 } from "lucide-react";
-import { setTimeout } from "timers/promises";
+import { Suspense } from "react";
 
 export default async function InterviewPage({
   params,
@@ -12,11 +13,19 @@ export default async function InterviewPage({
     <div className="container py-4 flex flex-col items-start gap-y-4 h-screen-header">
       <JobInfoBackLink jobInfoId={jobInfoId} />
 
-      <SuspendedItem
-        fallback={<Loader2 className="animate-spin size-24 m-auto" />}
-        item={setTimeout(2000)}
-        result={() => <div>Interviews for job info id : {jobInfoId}</div>}
-      />
+      <Suspense fallback={<Loader2 className="animate-spin size-24 m-auto" />}>
+        <SuspendedPage jobInfoId={jobInfoId} />
+      </Suspense>
     </div>
   );
+}
+
+async function SuspendedPage({ jobInfoId }: { jobInfoId: string }) {
+  const { userId, redirectToSignIn } = await getCurrentUser();
+
+  if (!userId) return redirectToSignIn();
+
+  const interviews = await getInterviews(jobInfoId, userId);
+
+  return null;
 }

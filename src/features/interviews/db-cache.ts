@@ -1,17 +1,13 @@
 import { revalidateTag } from "next/cache";
-import { getGlobalTag, getIdTag, getUserTag } from "@/lib/data-cache";
-import {
-  getJobInfoIdTag,
-  getJobInfosGlobalTag,
-  getJobInfoUserTag,
-} from "../job-infos/db-cache";
+import { getGlobalTag, getIdTag, getJobInfoTag } from "@/lib/data-cache";
+import { getJobInfoIdTag, getJobInfosGlobalTag } from "../job-infos/db-cache";
 
 export function getInterviewsGlobalTag() {
   return getGlobalTag("interviews");
 }
 
-export function getInterviewUserTag(userId: string) {
-  return getUserTag("interviews", userId);
+export function getInterviewJobInfoTag(jobInfoId: string) {
+  return getJobInfoTag("interviews", jobInfoId);
 }
 
 export function getInterviewIdTag(interviewId: string) {
@@ -20,12 +16,13 @@ export function getInterviewIdTag(interviewId: string) {
 
 export function revalidateInterviewsCache({
   id,
-  userId,
+  jobInfoId,
 }: {
   id: string;
-  userId: string;
+
+  jobInfoId: string;
 }) {
   revalidateTag(getJobInfosGlobalTag());
-  revalidateTag(getJobInfoUserTag(userId));
+  revalidateTag(getInterviewJobInfoTag(jobInfoId));
   revalidateTag(getJobInfoIdTag(id));
 }

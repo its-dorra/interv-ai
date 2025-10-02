@@ -1,9 +1,9 @@
 import { pgEnum, varchar } from "drizzle-orm/pg-core";
 import { createdAt, id, pgTable, updatedAt } from "../schema-helpers";
-import { relations } from "drizzle-orm";
 import { UserTable } from "./user";
 import { QuestionTable } from "./question";
 import { InterviewTable } from "./interview";
+import { relations } from "drizzle-orm/relations";
 
 export const experienceLevels = ["junior", "mid-level", "senior"] as const;
 export type ExperienceLevel = (typeof experienceLevels)[number];

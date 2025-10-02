@@ -1,7 +1,7 @@
 import { uuid, varchar } from "drizzle-orm/pg-core";
 import { id, createdAt, pgTable, updatedAt } from "../schema-helpers";
 import { JobInfoTable } from "./job-info";
-import { relations } from "drizzle-orm";
+import { relations } from "drizzle-orm/relations";
 
 export const InterviewTable = pgTable("interview", {
   id,
