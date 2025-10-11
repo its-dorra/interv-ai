@@ -5,15 +5,21 @@ import { notFound } from "next/navigation";
 import { getInterview } from "@/features/interviews/db";
 import { getCurrentUser } from "@/services/clerk/lib/get-current-user";
 import { formatDateTime } from "@/lib/formatters";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { DialogContent, DialogTitle } from "@radix-ui/react-dialog";
 import MarkdownRenderer from "@/components/markdown-renderer";
 import { Suspense } from "react";
 import { Loader2Icon } from "lucide-react";
 import CondensedMessages from "@/services/hume-ai/components/condensed-messages";
 import { condenseChatMessages } from "@/services/hume-ai/lib/condense-messages";
 import { fetchChatMessages } from "@/services/hume-ai/lib/api";
+import { ActionButton } from "@/components/ui/action-button";
+import { generateInterviewFeedback } from "@/features/interviews/actions";
 
 export default async function InterviewPage({
   params,
@@ -59,12 +65,19 @@ export default async function InterviewPage({
             item={interview}
             fallback={<Skeleton className="w-32" />}
             result={(i) =>
-              !i.feedback ? null : ( // TODO: generate feedback button
+              !i.feedback ? (
+                <ActionButton
+                  //@ts-expect-error
+                  action={generateInterviewFeedback.bind(null, { interviewId })}
+                >
+                  Generate Feedback
+                </ActionButton>
+              ) : (
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>View Feedback</Button>
                   </DialogTrigger>
-                  <DialogContent className="md:max-w-3xl lg:max-w-4xl max-h-[calc(100% - 2rem)] overflow-y-auto flex flex-col">
+                  <DialogContent className="md:max-w-3xl lg:max-w-4xl max-h-[calc(100%_-_2rem)] overflow-y-auto flex flex-col">
                     <DialogTitle>Feedback</DialogTitle>
                     <MarkdownRenderer>{i.feedback}</MarkdownRenderer>
                   </DialogContent>

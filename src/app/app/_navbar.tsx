@@ -36,8 +36,6 @@ export default function NavBar({
   const { id: jobInfoId } = useParams();
   const pathname = usePathname();
 
-  console.log({ pathname, jobInfoId });
-
   return (
     <header className="h-header border-b">
       <nav className="container flex h-full items-center justify-between">

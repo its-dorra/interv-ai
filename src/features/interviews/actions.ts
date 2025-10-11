@@ -12,6 +12,7 @@ import { canCreateInterview } from "./permissions";
 import { PLAN_LIMIT_MESSAGE, RATE_LIMIT_MESSAGE } from "@/lib/error-toast";
 import arcjet, { request, tokenBucket } from "@arcjet/next";
 import { serverEnv } from "@/data/env/server";
+import { generateAiInterviewFeedback } from "@/services/ai/interviews";
 
 const aj = arcjet({
   characteristics: ["userId"],
@@ -67,11 +68,11 @@ export const createInterview = authActionClient
 export const updateInterview = authActionClient
   .inputSchema(
     z.object({
-      humeChatId: z.string().min(1).nullish(),
+      humeChatId: z.string().min(1).optional(),
       duration: z
         .string()
         .regex(/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/)
-        .nullish(),
+        .optional(),
     })
   )
   .bindArgsSchemas<[id: z.ZodString]>([z.string().uuid()])
@@ -99,3 +100,46 @@ export const updateInterview = authActionClient
       return updatedInterview;
     }
   );
+
+export const generateInterviewFeedback = authActionClient
+  .inputSchema(z.object({ interviewId: z.string().uuid() }))
+  .action(async ({ parsedInput: { interviewId }, ctx: { userId, user } }) => {
+    const interview = await getInterview(interviewId, userId);
+    if (!interview) {
+      return {
+        success: false,
+        error: "Interview not found",
+        data: null,
+      } as const;
+    }
+
+    if (!interview.humeChatId) {
+      return {
+        success: false,
+        error: "Interview has not been conducted yet",
+        data: null,
+      } as const;
+    }
+
+    const feedback = await generateAiInterviewFeedback({
+      humeChatId: interview.humeChatId,
+      jobInfo: interview.jobInfo,
+      userName: user.name,
+    });
+
+    if (!feedback) {
+      return {
+        success: false,
+        error: "Failed to generate feedback",
+        data: null,
+      } as const;
+    }
+
+    await updateInterviewDb(interviewId, { feedback });
+
+    return {
+      success: true,
+      error: null,
+      data: feedback,
+    } as const;
+  });

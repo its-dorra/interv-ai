@@ -1,0 +1,181 @@
+"use client";
+
+import BackLink from "@/components/back-link";
+import MarkdownRenderer from "@/components/markdown-renderer";
+import { Button } from "@/components/ui/button";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { questionDifficulties } from "@/drizzle/schema";
+import type { JobInfo } from "@/features/job-infos/types";
+import { Loader2Icon } from "lucide-react";
+import { useState } from "react";
+import { useCompletion } from "@ai-sdk/react";
+import { errorToast } from "@/lib/error-toast";
+type Status = "awaiting-answer" | "awaiting-difficulty" | "init";
+
+export default function NewQuestionClientPage({
+  jobInfo,
+}: {
+  jobInfo: JobInfo;
+}) {
+  const [answer, setAnswer] = useState<string | null>(null);
+  const [status, setStatus] = useState<Status>("init");
+  const {
+    isLoading: isGeneratingQuestion,
+    complete: generateQuestion,
+    completion: question,
+    setCompletion: setQuestion,
+  } = useCompletion({
+    api: "/api/ai/questions/generate-question",
+    onFinish: () => {
+      setStatus("awaiting-answer");
+    },
+    onError: (err) => {
+      errorToast(err.message);
+    },
+  });
+
+  const {
+    isLoading: isGeneratingFeedback,
+    complete: generateFeedback,
+    completion: feedback,
+    setCompletion: setFeedback,
+  } = useCompletion({
+    api: "/api/ai/questions/generate-feedback",
+    onFinish: () => {
+      setStatus("awaiting-difficulty");
+    },
+    onError: (err) => {
+      errorToast(err.message);
+    },
+  });
+
+  return (
+    <div className="flex flex-col items-center gap-4 w-full max-w-[2000px] mx-auto grow h-screen-header">
+      <div className="container flex gap-4 mt-4 items-center justify-between">
+        <div className="grow basis-0 ">
+          <BackLink href={`/app/job-infos/${jobInfo.id}`}>
+            {jobInfo.name}
+          </BackLink>
+        </div>
+        <Controls
+          isLoading={isGeneratingQuestion || isGeneratingFeedback}
+          status={status}
+          generateQuestion={generateQuestion}
+          generateFeedback={generateFeedback}
+        />
+        <div className="grow hidden md:block" />
+      </div>
+      <QuestionContainer
+        answer={answer}
+        feedback={feedback}
+        question={question}
+        setAnswer={setAnswer}
+        status={status}
+      />
+    </div>
+  );
+}
+
+function QuestionContainer({
+  question,
+  feedback,
+  answer,
+  status,
+  setAnswer,
+}: {
+  question: string | null;
+  feedback: string | null;
+  answer: string | null;
+  status: Status;
+  setAnswer: (value: string) => void;
+}) {
+  return (
+    <ResizablePanelGroup direction="horizontal" className="grow border-t">
+      <ResizablePanel id="question-and-feedback" defaultSize={50} minSize={10}>
+        <ResizablePanelGroup direction="vertical" className="grow">
+          <ResizablePanel id="question" defaultSize={25} minSize={10}>
+            <ScrollArea className="h-full min-w-48 *:h-full">
+              {status === "init" ? (
+                <p className="text-base md:text-lg flex items-center justify-center h-full p-6">
+                  Get started by selecting a question difficulty above.
+                </p>
+              ) : (
+                question && (
+                  <MarkdownRenderer className="p-6">
+                    {question}
+                  </MarkdownRenderer>
+                )
+              )}
+            </ScrollArea>
+          </ResizablePanel>
+          {feedback && (
+            <>
+              <ResizableHandle withHandle />
+
+              <ResizablePanel id="feedback" defaultSize={75} minSize={10}>
+                <ScrollArea className="h-full min-w-48 *:h-full">
+                  <MarkdownRenderer className="p-6">
+                    {feedback}
+                  </MarkdownRenderer>
+                </ScrollArea>
+              </ResizablePanel>
+            </>
+          )}
+        </ResizablePanelGroup>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel id="answer" defaultSize={50} minSize={10}>
+        <ScrollArea className="h-full min-w-48 *:h-full">
+          <Textarea
+            value={answer ?? ""}
+            onChange={(e) => setAnswer(e.target.value)}
+            disabled={status !== "awaiting-answer"}
+            placeholder="Type your answer here..."
+            className="w-full h-full resize-none rounded-none focus-visible:ring focus-visible:ring-inset !text-base p-6"
+          />
+        </ScrollArea>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+
+function Controls({
+  status,
+  isLoading,
+  generateQuestion,
+  generateFeedback,
+}: {
+  status: Status;
+  isLoading: boolean;
+  generateQuestion: ReturnType<typeof useCompletion>["complete"];
+  generateFeedback: ReturnType<typeof useCompletion>["complete"];
+}) {
+  return (
+    <div className="flex gap-2">
+      {status === "awaiting-answer"
+        ? null
+        : questionDifficulties.map((diff) => (
+            <Button
+              key={diff}
+              size="sm"
+              disabled={isLoading}
+              onClick={() => {
+                // TODO: Implement
+              }}
+            >
+              {!isLoading ? (
+                diff.charAt(0).toUpperCase() + diff.slice(1)
+              ) : (
+                <Loader2Icon className="size-6 animate-spin" />
+              )}
+            </Button>
+          ))}
+    </div>
+  );
+}

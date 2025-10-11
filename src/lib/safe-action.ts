@@ -6,11 +6,13 @@ export const actionClient = createSafeActionClient({
 });
 
 export const authActionClient = actionClient.use(async ({ next }) => {
-  const { userId } = await getCurrentUser({ allData: false });
+  const { userId, user, redirectToSignIn } = await getCurrentUser({
+    allData: true,
+  });
 
-  if (!userId) {
-    throw new Error("Unauthorized");
+  if (!userId || !user) {
+    return redirectToSignIn();
   }
 
-  return next({ ctx: { userId } });
+  return next({ ctx: { userId, user } });
 });

@@ -39,6 +39,9 @@ export async function getInterview(id: string, userId: string) {
       jobInfo: {
         id: JobInfoTable.id,
         userId: JobInfoTable.userId,
+        title: JobInfoTable.title,
+        experienceLevel: JobInfoTable.experienceLevel,
+        description: JobInfoTable.description,
       },
     })
     .from(InterviewTable)

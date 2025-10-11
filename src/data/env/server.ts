@@ -8,6 +8,7 @@ export const serverEnv = createEnv({
     DATABASE_URL: z.string().url(),
     HUME_API_KEY: z.string().min(1, "HUME_API_KEY is required"),
     HUME_SECRET_KEY: z.string().min(1, "HUME_SECRET_KEY is required"),
+    GEMINI_API_KEY: z.string().min(1, "GEMINI_API_KEY is required"),
   },
   emptyStringAsUndefined: true,
   experimental__runtimeEnv: process.env,

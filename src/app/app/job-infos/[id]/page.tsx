@@ -21,7 +21,7 @@ const options = [
     label: "Answer Technical Questions",
     description:
       "Challenge yourself with practice questions tailored to your job description.",
-    href: "question",
+    href: "questions",
   },
   {
     label: "Practice Interviewing",
