@@ -5,11 +5,13 @@ import { OnboardingClient } from "./_client";
 export default async function OnboardingPage() {
   const { userId, user } = await getCurrentUser({ allData: true });
 
+  console.log({ userId, user });
+
   if (!userId) {
     redirect("/");
   }
 
-  if (user !== null) {
+  if (user) {
     redirect("/app");
   }
 

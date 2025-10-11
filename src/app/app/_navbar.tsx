@@ -1,7 +1,14 @@
 "use client";
 
 import { ThemeToggle } from "@/components/theme-toggle";
-import { BrainCircuitIcon, LogOut, User } from "lucide-react";
+import {
+  BookOpenIcon,
+  BrainCircuitIcon,
+  FileSlidersIcon,
+  LogOut,
+  SpeechIcon,
+  User,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +18,14 @@ import {
 import { useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import UserAvatar from "@/features/users/components/user-avatar";
+import { useParams, usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+
+const navLinks = [
+  { href: "interviews", label: "Interviews", Icon: SpeechIcon },
+  { href: "questions", label: "Questions", Icon: BookOpenIcon },
+  { href: "resume", label: "Resume", Icon: FileSlidersIcon },
+] as const;
 
 export default function NavBar({
   user,
@@ -18,6 +33,10 @@ export default function NavBar({
   user: { name: string; imageUrl: string };
 }) {
   const { openUserProfile, signOut } = useClerk();
+  const { id: jobInfoId } = useParams();
+  const pathname = usePathname();
+
+  console.log({ pathname, jobInfoId });
 
   return (
     <header className="h-header border-b">
@@ -28,6 +47,28 @@ export default function NavBar({
         </Link>
 
         <div className="flex items-center space-x-4">
+          {typeof jobInfoId === "string" &&
+            navLinks.map((link) => {
+              const hrefPath =
+                `/app/job-infos/${jobInfoId}/${link.href}` as const;
+
+              const isActive = pathname === hrefPath;
+
+              return (
+                <Button
+                  variant={isActive ? "secondary" : "ghost"}
+                  key={link.label}
+                  asChild
+                  className="max-sm:hidden"
+                >
+                  <Link href={hrefPath}>
+                    <link.Icon />
+                    {link.label}
+                  </Link>
+                </Button>
+              );
+            })}
+
           <ThemeToggle />
 
           <DropdownMenu>

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         const clerkData = event.data;
 
         const email = clerkData.email_addresses?.find(
-          (email) => email.id === clerkData.primary_email_address_id,
+          (email) => email.id === clerkData.primary_email_address_id
         )?.email_address;
 
         if (!email) {
@@ -27,6 +27,8 @@ export async function POST(request: NextRequest) {
           createdAt: new Date(clerkData.created_at),
           updatedAt: new Date(clerkData.updated_at),
         });
+
+        console.log({ email });
 
         break;
       }

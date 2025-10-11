@@ -4,10 +4,10 @@ import { relations } from "drizzle-orm/relations";
 import { JobInfoTable } from "./job-info";
 
 export const UserTable = pgTable("users", {
-  id: varchar("id").primaryKey(),
-  email: varchar("email").notNull().unique(),
-  name: varchar("name").notNull(),
-  imageUrl: varchar("image_url").notNull(),
+  id: varchar().primaryKey(),
+  email: varchar().notNull().unique(),
+  name: varchar().notNull(),
+  imageUrl: varchar().notNull(),
   createdAt,
   updatedAt,
 });

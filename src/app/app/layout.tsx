@@ -13,7 +13,7 @@ export default async function OnboardingPage({
     redirect("/");
   }
 
-  if (user == null) {
+  if (!user) {
     redirect("/onboarding");
   }
 
