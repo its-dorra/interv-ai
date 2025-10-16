@@ -3,7 +3,7 @@ import { createdAt, id, pgTable, updatedAt } from "../schema-helpers";
 import { relations } from "drizzle-orm/relations";
 import { JobInfoTable } from "./job-info";
 
-export const questionDifficulties = ["east", "medium", "hard"] as const;
+export const questionDifficulties = ["easy", "medium", "hard"] as const;
 export type QuestionDifficulty = (typeof questionDifficulties)[number];
 export const questionDifficultyEnum = pgEnum(
   "questions_question_difficulty",
@@ -12,10 +12,8 @@ export const questionDifficultyEnum = pgEnum(
 
 export const QuestionTable = pgTable("questions", {
   id,
-  title: varchar(),
   text: varchar().notNull(),
   questionDifficulty: questionDifficultyEnum().notNull(),
-  description: varchar().notNull(),
   jobInfoId: uuid()
     .references(() => JobInfoTable.id, { onDelete: "cascade" })
     .notNull(),

@@ -7,7 +7,6 @@ import { getUser } from "@/features/users/actions";
 
 export function OnboardingClient({ userId }: { userId: string }) {
   const router = useRouter();
-  console.log("OnboardingClient", { userId });
   useEffect(() => {
     const intervalId = setInterval(async () => {
       const user = await getUser(userId);

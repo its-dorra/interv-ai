@@ -1,77 +1,9 @@
 {
-  "id": "27df6a46-99eb-4700-b898-e12083950875",
-  "prevId": "2a7c42e1-f69d-47b1-8115-1338c05dd3a4",
+  "id": "36235f6c-c9b7-4a1a-a10a-7eaec259116d",
+  "prevId": "1c2f05e6-cf92-429d-9904-4c9bb7e152ac",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.meet_ai_interview": {
-      "name": "meet_ai_interview",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "jobInfoId": {
-          "name": "jobInfoId",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "duration": {
-          "name": "duration",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "humeChatId": {
-          "name": "humeChatId",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "feedback": {
-          "name": "feedback",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "meet_ai_interview_jobInfoId_meet_ai_job_info_id_fk": {
-          "name": "meet_ai_interview_jobInfoId_meet_ai_job_info_id_fk",
-          "tableFrom": "meet_ai_interview",
-          "tableTo": "meet_ai_job_info",
-          "columnsFrom": ["jobInfoId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.meet_ai_job_info": {
       "name": "meet_ai_job_info",
       "schema": "",
@@ -118,14 +50,14 @@
           "name": "createdAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
@@ -135,9 +67,85 @@
           "name": "meet_ai_job_info_userId_meet_ai_users_id_fk",
           "tableFrom": "meet_ai_job_info",
           "tableTo": "meet_ai_users",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.meet_ai_interview": {
+      "name": "meet_ai_interview",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "jobInfoId": {
+          "name": "jobInfoId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "duration": {
+          "name": "duration",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "humeChatId": {
+          "name": "humeChatId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "feedback": {
+          "name": "feedback",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meet_ai_interview_jobInfoId_meet_ai_job_info_id_fk": {
+          "name": "meet_ai_interview_jobInfoId_meet_ai_job_info_id_fk",
+          "tableFrom": "meet_ai_interview",
+          "tableTo": "meet_ai_job_info",
+          "columnsFrom": [
+            "jobInfoId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -158,12 +166,6 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "title": {
-          "name": "title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
         "text": {
           "name": "text",
           "type": "varchar",
@@ -177,12 +179,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
         "jobInfoId": {
           "name": "jobInfoId",
           "type": "uuid",
@@ -193,14 +189,14 @@
           "name": "createdAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
@@ -210,8 +206,12 @@
           "name": "meet_ai_questions_jobInfoId_meet_ai_job_info_id_fk",
           "tableFrom": "meet_ai_questions",
           "tableTo": "meet_ai_job_info",
-          "columnsFrom": ["jobInfoId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "jobInfoId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -254,14 +254,14 @@
           "name": "createdAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
@@ -272,7 +272,9 @@
         "meet_ai_users_email_unique": {
           "name": "meet_ai_users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -284,12 +286,20 @@
     "public.job_info_experience_level": {
       "name": "job_info_experience_level",
       "schema": "public",
-      "values": ["junior", "mid-level", "senior"]
+      "values": [
+        "junior",
+        "mid-level",
+        "senior"
+      ]
     },
     "public.questions_question_difficulty": {
       "name": "questions_question_difficulty",
       "schema": "public",
-      "values": ["east", "medium", "hard"]
+      "values": [
+        "easy",
+        "medium",
+        "hard"
+      ]
     }
   },
   "schemas": {},

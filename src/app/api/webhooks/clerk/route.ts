@@ -28,8 +28,6 @@ export async function POST(request: NextRequest) {
           updatedAt: new Date(clerkData.updated_at),
         });
 
-        console.log({ email });
-
         break;
       }
       case "user.deleted": {
@@ -44,7 +42,6 @@ export async function POST(request: NextRequest) {
         break;
     }
   } catch (e) {
-    console.log({ e });
     return new Response("Invalid webhook", { status: 400 });
   }
 

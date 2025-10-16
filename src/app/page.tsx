@@ -21,6 +21,7 @@ export default function Home() {
         <UserButton />
         <ThemeToggle />
       </div>
+
       <PricingTable />
     </div>
   );

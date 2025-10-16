@@ -10,12 +10,18 @@ import {
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { questionDifficulties } from "@/drizzle/schema";
+import {
+  questionDifficulties,
+  type QuestionDifficulty,
+} from "@/drizzle/schema";
 import type { JobInfo } from "@/features/job-infos/types";
 import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
-import { useCompletion } from "@ai-sdk/react";
+import { useChat, useCompletion } from "@ai-sdk/react";
 import { errorToast } from "@/lib/error-toast";
+import { DefaultChatTransport } from "ai";
+import z from "zod";
+
 type Status = "awaiting-answer" | "awaiting-difficulty" | "init";
 
 export default function NewQuestionClientPage({
@@ -25,20 +31,52 @@ export default function NewQuestionClientPage({
 }) {
   const [answer, setAnswer] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>("init");
+
+  // TODO: implement it
+  const [questionId, setQuestionId] = useState<string | null>(null);
+
   const {
-    isLoading: isGeneratingQuestion,
-    complete: generateQuestion,
-    completion: question,
-    setCompletion: setQuestion,
-  } = useCompletion({
-    api: "/api/ai/questions/generate-question",
-    onFinish: () => {
+    status: questionStatus,
+    sendMessage: generateQuestion,
+    messages: questionMessages,
+    setMessages: setQuestion,
+  } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/ai/questions/generate-question",
+    }),
+    onFinish: ({ messages }) => {
+      for (const m of messages) {
+        const item = m.metadata;
+
+        if (!item) continue;
+
+        const parsedItem = z
+          .object({ quesitonId: z.string().uuid() })
+          .safeParse(item);
+
+        if (!parsedItem.success) continue;
+
+        setQuestionId(parsedItem.data.quesitonId);
+        break;
+      }
+
       setStatus("awaiting-answer");
     },
     onError: (err) => {
       errorToast(err.message);
     },
   });
+
+  const isGeneratingQuestion =
+    questionStatus === "streaming" || questionStatus === "submitted";
+
+  const question =
+    questionMessages
+      .flatMap((message) => message.parts)
+      .filter((part) => part.type === "text")
+      .map((part) => part.text)
+      .slice(1)
+      .join("") || null;
 
   const {
     isLoading: isGeneratingFeedback,
@@ -64,10 +102,32 @@ export default function NewQuestionClientPage({
           </BackLink>
         </div>
         <Controls
+          disableAnswerButton={!answer?.trim() || !questionId}
+          reset={() => {
+            setStatus("init");
+            setQuestion([]);
+            setFeedback("");
+            setAnswer(null);
+          }}
           isLoading={isGeneratingQuestion || isGeneratingFeedback}
           status={status}
-          generateQuestion={generateQuestion}
-          generateFeedback={generateFeedback}
+          generateQuestion={(difficulty) => {
+            setQuestion([]);
+            setFeedback("");
+            setAnswer(null);
+
+            generateQuestion(
+              { text: difficulty },
+              { body: { jobInfoId: jobInfo.id } }
+            );
+          }}
+          generateFeedback={() => {
+            if (!answer?.trim() || !questionId) return;
+
+            generateFeedback(answer.trim(), {
+              body: { questionId },
+            });
+          }}
         />
         <div className="grow hidden md:block" />
       </div>
@@ -101,7 +161,7 @@ function QuestionContainer({
         <ResizablePanelGroup direction="vertical" className="grow">
           <ResizablePanel id="question" defaultSize={25} minSize={10}>
             <ScrollArea className="h-full min-w-48 *:h-full">
-              {status === "init" ? (
+              {status === "init" && !question ? (
                 <p className="text-base md:text-lg flex items-center justify-center h-full p-6">
                   Get started by selecting a question difficulty above.
                 </p>
@@ -146,36 +206,66 @@ function QuestionContainer({
 }
 
 function Controls({
+  disableAnswerButton,
   status,
   isLoading,
   generateQuestion,
   generateFeedback,
+  reset,
 }: {
+  disableAnswerButton: boolean;
   status: Status;
   isLoading: boolean;
-  generateQuestion: ReturnType<typeof useCompletion>["complete"];
-  generateFeedback: ReturnType<typeof useCompletion>["complete"];
+  generateQuestion: (difficulty: QuestionDifficulty) => void;
+  generateFeedback: () => void;
+  reset: () => void;
 }) {
   return (
     <div className="flex gap-2">
-      {status === "awaiting-answer"
-        ? null
-        : questionDifficulties.map((diff) => (
-            <Button
-              key={diff}
-              size="sm"
-              disabled={isLoading}
-              onClick={() => {
-                // TODO: Implement
-              }}
-            >
-              {!isLoading ? (
-                diff.charAt(0).toUpperCase() + diff.slice(1)
-              ) : (
-                <Loader2Icon className="size-6 animate-spin" />
-              )}
-            </Button>
-          ))}
+      {status === "awaiting-answer" ? (
+        <>
+          <Button
+            disabled={isLoading}
+            onClick={reset}
+            size="sm"
+            variant={"outline"}
+          >
+            {isLoading ? (
+              <Loader2Icon className="size-6 animate-spin" />
+            ) : (
+              "Skip"
+            )}
+          </Button>
+          <Button
+            disabled={disableAnswerButton}
+            onClick={generateFeedback}
+            size="sm"
+          >
+            {isLoading ? (
+              <Loader2Icon className="size-6 animate-spin" />
+            ) : (
+              "Answer"
+            )}
+          </Button>
+        </>
+      ) : (
+        questionDifficulties.map((diff) => (
+          <Button
+            key={diff}
+            size="sm"
+            disabled={isLoading}
+            onClick={() => {
+              generateQuestion(diff);
+            }}
+          >
+            {!isLoading ? (
+              diff.charAt(0).toUpperCase() + diff.slice(1)
+            ) : (
+              <Loader2Icon className="size-6 animate-spin" />
+            )}
+          </Button>
+        ))
+      )}
     </div>
   );
 }
