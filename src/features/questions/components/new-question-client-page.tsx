@@ -32,8 +32,9 @@ export default function NewQuestionClientPage({
   const [answer, setAnswer] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>("init");
 
-  // TODO: implement it
   const [questionId, setQuestionId] = useState<string | null>(null);
+
+  console.log({ questionId });
 
   const {
     status: questionStatus,
@@ -51,12 +52,12 @@ export default function NewQuestionClientPage({
         if (!item) continue;
 
         const parsedItem = z
-          .object({ quesitonId: z.string().uuid() })
+          .object({ questionId: z.string().uuid() })
           .safeParse(item);
 
         if (!parsedItem.success) continue;
 
-        setQuestionId(parsedItem.data.quesitonId);
+        setQuestionId(parsedItem.data.questionId);
         break;
       }
 
