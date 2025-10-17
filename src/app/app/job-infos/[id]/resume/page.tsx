@@ -1,12 +1,10 @@
 import JobInfoBackLink from "@/features/job-infos/components/job-info-back-link";
-import { getJobInfo } from "@/features/job-infos/db";
+import ResumePageClient from "@/features/resume-analysis/components/resume-page-client";
+import { canRunResumeAnalysis } from "@/features/resume-analysis/permissions";
 
-import { canCreateQuestion } from "@/features/questions/permissions";
-import { getCurrentUser } from "@/services/clerk/lib/get-current-user";
 import { Loader2Icon } from "lucide-react";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { setTimeout } from "timers/promises";
 
 export default async function ResumePage({
   params,
