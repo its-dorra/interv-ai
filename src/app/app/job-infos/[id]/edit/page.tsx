@@ -5,6 +5,11 @@ import { jobInfoPromise } from "../page";
 import SuspendedItem from "@/components/suspended-item";
 import { Loader2 } from "lucide-react";
 
+export const metadata = {
+  title: "Edit Job Info | IntervAI",
+  description: "Edit job information.",
+};
+
 export default async function JobInfoNewPage({
   params,
 }: PageProps<"/app/job-infos/[id]/edit">) {

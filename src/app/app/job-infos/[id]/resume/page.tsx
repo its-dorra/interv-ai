@@ -6,6 +6,11 @@ import { Loader2Icon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Resume | IntervAI",
+  description: "Resume for this job.",
+};
+
 export default async function ResumePage({
   params,
 }: PageProps<"/app/job-infos/[id]/resume">) {

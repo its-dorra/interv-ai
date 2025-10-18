@@ -21,6 +21,11 @@ import { fetchChatMessages } from "@/services/hume-ai/lib/api";
 import { ActionButton } from "@/components/ui/action-button";
 import { generateInterviewFeedback } from "@/features/interviews/actions";
 
+export const metadata = {
+  title: "Interview Details | IntervAI",
+  description: "Details for this interview.",
+};
+
 export default async function InterviewPage({
   params,
 }: PageProps<"/app/job-infos/[id]/interviews/[interviewId]">) {

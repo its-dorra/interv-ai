@@ -1,6 +1,5 @@
 import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
-import JobInfoBackLink from "@/features/job-infos/components/job-info-back-link";
 import { getCurrentUser } from "@/services/clerk/lib/get-current-user";
 import { getJobInfo } from "@/features/job-infos/db";
 import { notFound, redirect } from "next/navigation";
@@ -9,6 +8,11 @@ import { fetchAccessToken } from "hume";
 import { VoiceProvider } from "@humeai/voice-react";
 import StartCall from "@/services/hume-ai/components/start-call";
 import { canCreateInterview } from "@/features/interviews/permissions";
+
+export const metadata = {
+  title: "New Interview | IntervAI",
+  description: "Create a new interview.",
+};
 
 export default async function NewInterviewPage({
   params,

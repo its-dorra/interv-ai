@@ -2,6 +2,11 @@ import BackLink from "@/components/back-link";
 import { Card, CardContent } from "@/components/ui/card";
 import JobInfoForm from "@/features/job-infos/components/job-info-form";
 
+export const metadata = {
+  title: "New Job | IntervAI",
+  description: "Add a new job.",
+};
+
 export default function JobInfoNewPage() {
   return (
     <div className="container my-4 max-w-5xl space-y-8">

@@ -15,6 +15,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Interviews | IntervAI",
+  description: "List of interviews for this job.",
+};
+
 export default async function InterviewPage({
   params,
 }: PageProps<"/app/job-infos/[id]/interviews">) {

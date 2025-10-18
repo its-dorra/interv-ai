@@ -41,6 +41,11 @@ const options = [
   },
 ] as const;
 
+export const metadata = {
+  title: "Job Info | IntervAI",
+  description: "Details about the selected job.",
+};
+
 export const jobInfoPromise = (jobInfoId: string) =>
   getCurrentUser().then(async ({ userId, redirectToSignIn }) => {
     if (!userId) return redirectToSignIn();

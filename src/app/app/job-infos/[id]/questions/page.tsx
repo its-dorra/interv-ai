@@ -6,6 +6,11 @@ import { Loader2Icon } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Interview Questions | IntervAI",
+  description: "Questions for this job interview.",
+};
+
 export default async function QuestionsPage({
   params,
 }: PageProps<"/app/job-infos/[id]/questions">) {
