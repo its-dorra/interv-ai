@@ -36,7 +36,7 @@ function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
             <BrainCircuitIcon className="size-8 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">Landr</h1>
+            <h1 className="text-2xl font-bold text-foreground">IntervAI</h1>
           </div>
           <Suspense
             fallback={
@@ -97,27 +97,28 @@ function Hero() {
   );
 }
 
+const features = [
+  {
+    title: "AI Interview Practice",
+    Icon: SpeechIcon,
+    description:
+      "Simulate real interviews with AI that adapts to your responses. Build confidence and eliminate nervousness before the big day.",
+  },
+  {
+    title: "Tailored Resume Suggestions",
+    Icon: FileSlidersIcon,
+    description:
+      "Transform your resume into an ATS-friendly, recruiter-approved document that gets you more callbacks.",
+  },
+  {
+    title: "Technical Question Practice",
+    Icon: BookOpenCheckIcon,
+    description:
+      "Solve coding problems with guided hints and explanations. Perfect your approach to technical interviews.",
+  },
+];
+
 function Features() {
-  const features = [
-    {
-      title: "AI Interview Practice",
-      Icon: SpeechIcon,
-      description:
-        "Simulate real interviews with AI that adapts to your responses. Build confidence and eliminate nervousness before the big day.",
-    },
-    {
-      title: "Tailored Resume Suggestions",
-      Icon: FileSlidersIcon,
-      description:
-        "Transform your resume into an ATS-friendly, recruiter-approved document that gets you more callbacks.",
-    },
-    {
-      title: "Technical Question Practice",
-      Icon: BookOpenCheckIcon,
-      description:
-        "Solve coding problems with guided hints and explanations. Perfect your approach to technical interviews.",
-    },
-  ];
   return (
     <section className="py-20">
       <div className="container">
@@ -394,34 +395,34 @@ function DetailedFeatures() {
   );
 }
 
-function Stats() {
-  const stats = [
-    {
-      value: "2.3x",
-      label: "Faster job placement",
-      description:
-        "Our users land offers in 4-6 weeks vs industry average of 12+ weeks",
-    },
-    {
-      value: "65%",
-      label: "Fewer interviews needed",
-      description:
-        "Average 3-4 interviews to land an offer vs typical 8-10 interviews",
-    },
-    {
-      value: "89%",
-      label: "Interview success rate",
-      description:
-        "Users who complete our prep program receive offers at 9/10 interviews",
-    },
-    {
-      value: "$15K+",
-      label: "Higher starting salaries",
-      description:
-        "Better negotiation skills lead to significantly higher compensation",
-    },
-  ];
+const stats = [
+  {
+    value: "2.3x",
+    label: "Faster job placement",
+    description:
+      "Our users land offers in 4-6 weeks vs industry average of 12+ weeks",
+  },
+  {
+    value: "65%",
+    label: "Fewer interviews needed",
+    description:
+      "Average 3-4 interviews to land an offer vs typical 8-10 interviews",
+  },
+  {
+    value: "89%",
+    label: "Interview success rate",
+    description:
+      "Users who complete our prep program receive offers at 9/10 interviews",
+  },
+  {
+    value: "$15K+",
+    label: "Higher starting salaries",
+    description:
+      "Better negotiation skills lead to significantly higher compensation",
+  },
+];
 
+function Stats() {
   return (
     <section className="py-20 bg-muted/30">
       <div className="container">
