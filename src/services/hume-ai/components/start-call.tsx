@@ -48,7 +48,9 @@ export default function StartCall({
     if (!interviewId) return;
 
     const interval = setInterval(() => {
-      updateInterview(interviewId, { duration: durationRef.current });
+      updateInterview(interviewId, {
+        duration: durationRef.current ?? undefined,
+      });
     }, 10000);
 
     return () => clearInterval(interval);
