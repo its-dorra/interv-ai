@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interv-AI 🎤
 
-## Getting Started
+An AI-powered interview preparation and practice platform built with Next.js.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **AI-Powered Mock Interviews** - Practice with intelligent AI interviewers powered by Hume AI that adapt to your responses
+- **Resume Analysis & ATS Scoring** - Upload your resume and job description to get detailed matching scores and ATS compatibility ratings
+- **Real-time Feedback** - Get instant feedback on your answers, communication skills, and interview performance
+- **Multiple Interview Types** - Support for technical, behavioral, and case interviews
+- **Performance Analytics** - Track your progress with detailed analytics and insights
+- **Resume-Job Matching Metrics** - Comprehensive analysis including keyword matching, skills alignment, and optimization suggestions
+- **Voice Interaction** - Natural voice-based interview practice with Hume AI's empathetic AI technology
+- **Responsive Design** - Seamless experience across desktop and mobile devices
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Frontend
+- **[Next.js 15](https://nextjs.org/)** - React framework with App Router
+- **[React 19](https://react.dev/)** - UI library
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[shadcn/ui](https://ui.shadcn.com/)** - Re-usable component library built with Radix UI
+- **[Geist Font](https://vercel.com/font)** - Optimized font family
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### AI & ML
+- **[Hume AI](https://www.hume.ai/)** - Empathetic AI for voice-based mock interviews
+- **[Vercel AI SDK](https://sdk.vercel.ai/)** - AI integration and streaming
 
-## Learn More
+### State Management & Data
+- **React Hooks** - State management
+- **Context API** - Global state handling
 
-To learn more about Next.js, take a look at the following resources:
+### Development Tools
+- **Biome** - Code linting and formatting
+- **Git** - Version control
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+Before you begin, ensure you have the following installed:
+- Node.js 18.0 or higher
+- npm, yarn, pnpm, or bun package manager
+- Git
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Dorra**
+- GitHub: [@its-dorra](https://github.com/its-dorra)
+
+## 🙏 Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- AI interviews powered by [Hume AI](https://www.hume.ai/)
+- AI integration via [Vercel AI SDK](https://sdk.vercel.ai/)
+
+---
+
+Made with ❤️ by Dorra
