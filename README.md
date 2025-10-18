@@ -35,16 +35,6 @@ An AI-powered interview preparation and practice platform built with Next.js.
 - **Biome** - Code linting and formatting
 - **Git** - Version control
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-- Node.js 18.0 or higher
-- npm, yarn, pnpm, or bun package manager
-- Git
-
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
