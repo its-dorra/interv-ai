@@ -72,6 +72,7 @@ Other Guidelines:
 - Be clear, constructive, and actionable. The goal is to help the candidate improve their resume so it is ok to be critical.
 - Refer to the candidate as "you" in your feedback. This feedback should be written as if you were speaking directly to the candidate.
 - Stop generating output as soon you have provided the full feedback.
+- Take into account that today is ${new Date().toLocaleDateString()}
 `,
   });
 }

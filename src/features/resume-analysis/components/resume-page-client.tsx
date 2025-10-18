@@ -8,7 +8,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Loader2Icon, UploadIcon } from "lucide-react";
+import {
+  AlertCircleIcon,
+  CheckCircleIcon,
+  Loader2Icon,
+  UploadIcon,
+  XCircleIcon,
+} from "lucide-react";
 import { type ReactNode, useRef, useState } from "react";
 import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { toast } from "sonner";
@@ -135,7 +141,9 @@ export default function ResumePageClient({ jobInfoId }: { jobInfoId: string }) {
               </div>
             </button>
           ) : (
-            <Loader2Icon className="size-16 animate-spin mx-auto" />
+            <div className="h-full flex items-center justify-center">
+              <Loader2Icon className="size-16 animate-spin" />
+            </div>
           )}
         </CardContent>
       </Card>
@@ -212,7 +220,15 @@ function AnalysisResults({
                         category.feedback.map((item, index) => {
                           if (!item) return null;
 
-                          return <FeedbackItem item={item} />;
+                          return (
+                            <FeedbackItem
+                              item={item}
+                              key={
+                                // biome-ignore lint/suspicious/noArrayIndexKey: <>
+                                index
+                              }
+                            />
+                          );
                         })
                       )}
                     </div>
@@ -272,12 +288,31 @@ function FeedbackItem({
     }
   };
 
+  const getIcon = () => {
+    switch (type) {
+      case "strength":
+        return <CheckCircleIcon className="size-4 text-primary" />;
+      case "minor-improvement":
+        return <AlertCircleIcon className="size-4 text-warning" />;
+      case "major-improvement":
+        return <XCircleIcon className="size-4 text-destructive" />;
+      default:
+        throw new Error(`Unknown feedback type ${type satisfies never}`);
+    }
+  };
+
   return (
     <div
       className={cn(
         "flex items-baseline gap-3 pl-3 pr-5 py-5 rounded-lg",
         getColors()
       )}
-    ></div>
+    >
+      <div>{getIcon()}</div>
+      <div className="flex flex-col gap-1">
+        <p className="text-base">{name}</p>
+        <p className="text-muted-foreground">{message}</p>
+      </div>
+    </div>
   );
 }
