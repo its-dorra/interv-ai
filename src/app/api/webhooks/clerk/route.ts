@@ -5,7 +5,7 @@ import { deleteUser, upsertUser } from "@/features/users/db";
 export async function POST(request: NextRequest) {
   try {
     const event = await verifyWebhook(request);
-
+    console.log({event})
     switch (event.type) {
       case "user.created":
       case "user.updated": {
@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
         break;
     }
   } catch (e) {
+    console.log({e})
     return new Response("Invalid webhook", { status: 400 });
   }
 
