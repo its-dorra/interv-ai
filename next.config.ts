@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     useCache: true,
     reactCompiler: true,
-    ppr: true,
+    ppr: false,
   },
 };
 
