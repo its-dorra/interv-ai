@@ -35,10 +35,6 @@ An AI-powered interview preparation and practice platform built with Next.js.
 - **Biome** - Code linting and formatting
 - **Git** - Version control
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 👨‍💻 Author
 
 **Dorra**
@@ -51,7 +47,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Styled with [Tailwind CSS](https://tailwindcss.com/)
 - AI interviews powered by [Hume AI](https://www.hume.ai/)
 - AI integration via [Vercel AI SDK](https://sdk.vercel.ai/)
-
----
-
-Made with ❤️ by Dorra
